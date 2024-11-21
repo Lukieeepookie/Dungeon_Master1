@@ -10,8 +10,15 @@ public class PlayerComponent : MonoBehaviour
     public float maxSpeed = 10f;
     public float AccRate = 10f;
     public float DecelRate = 15f;
+    public float jumpLeniency = 0.1f;
+    public float jumpForce = 10f;
+    public int jumpCount = 2;
+    public float gravityApex = 0.2f;
 
     public Vector3 respawn;
+
+    public Transform groundedCheck;
+    public LayerMask groundLayer;
 
     #endregion
     #region Private Variables
@@ -19,11 +26,17 @@ public class PlayerComponent : MonoBehaviour
     private Rigidbody2D rb;
     private GravityComponent gravity;
 
+    private int jumps = 0;
+
     private float boundaryY = -10;
     private bool isFacingRight = true;
     private float movementX;
     private float moveDirection = 0;
     private float appliedVelocity = 0f;
+    private float jumpTimer = 0f;
+    private bool jumping = false;
+
+    private float gravityTimer = 0f;
 
     #endregion
     void Start()
@@ -42,7 +55,7 @@ public class PlayerComponent : MonoBehaviour
             this.rb.velocity = Vector2.zero;
         }
         movementX = rb.velocity.x;
-
+        #region Inputs
         if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow))
         {
             moveDirection = 1f;
@@ -55,9 +68,24 @@ public class PlayerComponent : MonoBehaviour
         {
             moveDirection = 0f;
         }
+        if (jumpTimer > jumpLeniency)
+        {
+            jumping = false;
+        }
+        else
+        {
+            jumpTimer += Time.deltaTime;
+        }
+        if (Input.GetKeyDown(KeyCode.Z) && jumps > 0)
+        {
+            jumps -= 1;
+            jumpTimer = 0;
+            jumping = true;
+        }
 
+        #endregion
         Flip();
-
+        #region Left & Right Movement
         appliedVelocity = movementX + (moveDirection * AccRate * Time.deltaTime);
         if (appliedVelocity > maxSpeed)
         {
@@ -96,6 +124,38 @@ public class PlayerComponent : MonoBehaviour
         }
 
         this.rb.velocity = new Vector2(appliedVelocity, this.rb.velocity.y);
+        #endregion
+
+        #region Jump Movement
+        if (IsGrounded() && !jumping)
+        {
+            jumps = jumpCount;
+        }
+        if (jumping)
+        {
+            rb.velocity = new Vector2(this.rb.velocity.x, jumpForce);
+            gravity.setGravity(0.5f);
+        }
+        if (Input.GetKeyUp(KeyCode.Z) && this.rb.velocity.y > 0f || this.rb.velocity.y < 0f)
+        {
+            gravity.setGravity(1f);
+        }
+
+        if (gravityTimer > gravityApex && this.rb.velocity.y < 0f)
+        {
+            gravity.setGravity(1);
+        }
+        else
+        {
+            gravityTimer += Time.deltaTime;
+        }
+        if (this.rb.velocity.y == 0f)
+        {
+            gravity.setGravity(0);
+            gravityTimer = 0f;
+        }
+
+        #endregion
     }
 
     void Flip()
@@ -108,5 +168,10 @@ public class PlayerComponent : MonoBehaviour
             localScale.x *= -1f;
             transform.localScale = localScale;
         }
+    }
+
+    bool IsGrounded()
+    {
+        return Physics2D.OverlapCircle(groundedCheck.position, 0.2f, groundLayer);
     }
 }

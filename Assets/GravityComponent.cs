@@ -4,16 +4,27 @@ using UnityEngine;
 
 public class GravityComponent : MonoBehaviour
 {
-    public float gravity = 10;
+    public float gravity = 100f;
+
+    private float editGravity;
+    private float gravityApplied;
+
     private Rigidbody2D rb;
     void Start()
     {
+        editGravity = gravity;
         rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        rb.AddForce(new Vector2(0, -gravity*100) * Time.deltaTime);
+        editGravity = gravity;
+        gravityApplied = editGravity * 100 * -1;
+        rb.AddForce(new Vector2(0, gravityApplied) * Time.deltaTime);
+    }
+    public void setGravity(float multiplier)
+    {
+        editGravity *= gravity * multiplier;
     }
 }
