@@ -20,9 +20,10 @@ public class PlayerComponent : MonoBehaviour
     private GravityComponent gravity;
 
     private float boundaryY = -10;
-    private bool isFacingRight;
+    private bool isFacingRight = true;
     private float movementX;
     private float moveDirection = 0;
+    private float appliedVelocity = 0f;
 
     #endregion
     void Start()
@@ -55,7 +56,9 @@ public class PlayerComponent : MonoBehaviour
             moveDirection = 0f;
         }
 
-        float appliedVelocity = movementX + (moveDirection * AccRate * Time.deltaTime);
+        Flip();
+
+        appliedVelocity = movementX + (moveDirection * AccRate * Time.deltaTime);
         if (appliedVelocity > maxSpeed)
         {
             appliedVelocity = maxSpeed;
@@ -93,8 +96,6 @@ public class PlayerComponent : MonoBehaviour
         }
 
         this.rb.velocity = new Vector2(appliedVelocity, this.rb.velocity.y);
-
-        Flip();
     }
 
     void Flip()
@@ -102,8 +103,9 @@ public class PlayerComponent : MonoBehaviour
         if (isFacingRight && moveDirection < 0f || !isFacingRight && moveDirection > 0f)
         {
             isFacingRight = !isFacingRight;
+            print(isFacingRight);
             Vector3 localScale = transform.localScale;
-            localScale.x = -1f;
+            localScale.x *= -1f;
             transform.localScale = localScale;
         }
     }
