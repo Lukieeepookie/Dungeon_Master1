@@ -36,6 +36,8 @@ public class PlayerComponent : MonoBehaviour
     private float jumpTimer = 0f;
     private bool jumping = false;
 
+    private bool lightGravity = false;
+
     private float gravityTimer = 0f;
 
     #endregion
@@ -131,29 +133,18 @@ public class PlayerComponent : MonoBehaviour
         {
             jumps = jumpCount;
         }
-        if (jumping)
+        if (jumping && IsGrounded())
         {
+            jumping = false;
             rb.velocity = new Vector2(this.rb.velocity.x, jumpForce);
-            gravity.setGravity(0.5f);
+            lightGravity = true;
         }
-        if (Input.GetKeyUp(KeyCode.Z) && this.rb.velocity.y > 0f || this.rb.velocity.y < 0f)
+        if (Input.GetKeyUp(KeyCode.Z) || !IsGrounded() && this.rb.velocity.y <=0)
         {
-            gravity.setGravity(1f);
+            lightGravity = false;
         }
 
-        if (gravityTimer > gravityApex && this.rb.velocity.y < 0f)
-        {
-            gravity.setGravity(1);
-        }
-        else
-        {
-            gravityTimer += Time.deltaTime;
-        }
-        if (this.rb.velocity.y == 0f)
-        {
-            gravity.setGravity(0);
-            gravityTimer = 0f;
-        }
+        gravity.setGravityMultiplier(lightGravity ? 0.5f : 1f);
 
         #endregion
     }
@@ -169,7 +160,7 @@ public class PlayerComponent : MonoBehaviour
             transform.localScale = localScale;
         }
     }
-
+    
     bool IsGrounded()
     {
         return Physics2D.OverlapCircle(groundedCheck.position, 0.2f, groundLayer);

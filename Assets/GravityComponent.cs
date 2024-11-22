@@ -6,25 +6,23 @@ public class GravityComponent : MonoBehaviour
 {
     public float gravity = 100f;
 
-    private float editGravity;
     private float gravityApplied;
+    public float gravityMult = 1f;
 
     private Rigidbody2D rb;
     void Start()
     {
-        editGravity = gravity;
         rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        editGravity = gravity;
-        gravityApplied = editGravity * 100 * -1;
+        gravityApplied = -gravity * 100 * gravityMult;
         rb.AddForce(new Vector2(0, gravityApplied) * Time.deltaTime);
     }
-    public void setGravity(float multiplier)
+    public void setGravityMultiplier(float multiplier)
     {
-        editGravity *= gravity * multiplier;
+        gravityMult = multiplier;
     }
 }
