@@ -710,12 +710,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
-  AccRate: 25
+  AccRate: 100
   DecelRate: 100
+  airAcceleration: 25
   jumpLeniency: 0.1
-  jumpForce: 14
-  jumpCount: 1
-  gravityApex: 0.2
+  jumpForce: 16
+  minJumpTime: 0.1
+  airTimeLeniency: 1
+  airTimeGravity: 0.5
+  airTimeBoost: 2
+  CoyoteTime: 0.1
   respawn: {x: 0, y: 2.5, z: 0}
   groundedCheck: {fileID: 12586770}
   groundLayer:
