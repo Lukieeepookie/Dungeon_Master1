@@ -16,10 +16,10 @@ public class GravityComponent : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        gravityApplied = -gravity * 100 * gravityMult;
-        rb.AddForce(new Vector2(0, gravityApplied) * Time.deltaTime);
+        gravityApplied = -gravity * gravityMult;
+        rb.velocity += new Vector2(0, gravityApplied*Time.deltaTime);
     }
     public void setGravityMultiplier(float multiplier)
     {
