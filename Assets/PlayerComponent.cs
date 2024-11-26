@@ -29,6 +29,7 @@ public class PlayerComponent : MonoBehaviour
 
     private Rigidbody2D rb;
     private GravityComponent gravity;
+    public Animator animator;
 
     private float boundaryY = -10;
     private bool isFacingRight = true;
@@ -82,6 +83,8 @@ public class PlayerComponent : MonoBehaviour
         {
             gravity.gravityMult = airTimeGravity;
         }
+        animator.SetFloat("Speed", Mathf.Abs(movementX));
+        animator.SetBool("Grounded", IsGrounded());
     }
     void FixedUpdate()
     {
