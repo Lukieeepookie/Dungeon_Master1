@@ -325,7 +325,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -4.1, z: -0.020564094}
-  m_LocalScale: {x: 17.78, y: 1, z: 1}
+  m_LocalScale: {x: 50, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1599400165}
@@ -511,6 +511,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravity: 70
+  maxFallingSpeed: -25
   gravityMult: 1
 --- !u!114 &815939893
 MonoBehaviour:
@@ -550,7 +551,7 @@ Transform:
   m_GameObject: {fileID: 815939888}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalPosition: {x: 0, y: 1.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -589,9 +590,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPosition: {fileID: 815939888}
   camera: {fileID: 26216157}
-  cameraMaxOffsetX: 5
-  cameraMaxOffsetY: 7.5
-  followSpeed: 5
+  cameraMaxOffsetX: 2.5
+  cameraMaxOffsetY: 5
+  cameraMinOffsetX: 0.25
+  cameraMinOffsetY: 0.5
+  followSpeed: 8
 --- !u!4 &929833604
 Transform:
   m_ObjectHideFlags: 0
@@ -601,7 +604,7 @@ Transform:
   m_GameObject: {fileID: 929833602}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalPosition: {x: 0, y: 1.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
