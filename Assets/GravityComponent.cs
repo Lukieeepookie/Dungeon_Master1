@@ -5,6 +5,7 @@ using UnityEngine;
 public class GravityComponent : MonoBehaviour
 {
     public float gravity = 100f;
+    public float maxFallingSpeed = -25f;
 
     private float gravityApplied;
     public float gravityMult = 1f;
@@ -19,6 +20,8 @@ public class GravityComponent : MonoBehaviour
     void FixedUpdate()
     {
         gravityApplied = -gravity * gravityMult;
+        float velocityApplied = rb.velocity.y + (gravityApplied * Time.deltaTime);
+        if (velocityApplied < maxFallingSpeed)
         rb.velocity += new Vector2(0, gravityApplied*Time.deltaTime);
     }
     public void setGravityMultiplier(float multiplier)
