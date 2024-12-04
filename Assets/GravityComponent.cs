@@ -19,10 +19,13 @@ public class GravityComponent : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        gravityApplied = -gravity * gravityMult;
-        float velocityApplied = rb.velocity.y + (gravityApplied * Time.deltaTime);
+        gravityApplied = -gravity * gravityMult * Time.deltaTime;
+        float velocityApplied = rb.velocity.y + (gravityApplied);
         if (velocityApplied < maxFallingSpeed)
-        rb.velocity += new Vector2(0, gravityApplied*Time.deltaTime);
+        {
+            gravityApplied = 0f;
+        }
+        rb.velocity += new Vector2(0, gravityApplied);
     }
     public void setGravityMultiplier(float multiplier)
     {
